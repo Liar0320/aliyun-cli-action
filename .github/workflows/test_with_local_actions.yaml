@@ -10,7 +10,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Configure Aliyun CLI credentials
+    - name: Install and Configure Aliyun CLI
       uses: ./
       with:
         access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
