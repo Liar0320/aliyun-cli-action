@@ -17,7 +17,7 @@ jobs:
         access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         region: ${{ vars.ALIYUN_REGION }}
 
-    - name: Upload a file to Aliyun OSS
-      run: aliyun oss cp sample.html ${{ vars.BUCKET_DESTINATION }} -r --acl public-read
-      working-directory: ${{ vars.WORKING_DIRECTORY }}
+    # - name: Upload a file to Aliyun OSS
+    #   run: aliyun oss cp sample.html ${{ vars.BUCKET_DESTINATION }} -r --acl public-read
+    #   working-directory: ${{ vars.WORKING_DIRECTORY }}
 
