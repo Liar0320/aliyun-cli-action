@@ -1,0 +1,51 @@
+name: 'Setup Aliyun CLI'
+description: 'Install and Configure Aliyun command line tool'
+author: 'wadexu'
+inputs:
+  version:
+    required: false
+    default: "3.0.161"
+    description: 'Aliyun CLI version'
+  mode:
+    default: "AK"
+    description: 'Aliyun CLI Authentication mode, invalid vaules are [AK|StsToken] here'
+  region:
+    required: true
+    description: 'Region name of your service, for example: cn-shanghai'
+  access-key-id:
+    required: true
+    description: 'Access key ID of your account'
+  access-key-secret:
+    required: true
+    description: 'Secret of the access key'
+  sts-token:
+    description: 'StsToken, required in StsToken mode'
+runs:
+  using: composite
+  steps:
+    - run: |
+        #!/bin/bash
+        VERSION="${{ inputs.version }}"
+
+        if [[ ${VERSION} == "latest" ]]; then
+          VERSION=$(curl -sSL https://api.github.com/repos/aliyun/aliyun-cli/releases/latest | jq -r '.tag_name | split("/") | .[-1] | sub("^v"; "")')
+        fi
+
+        curl -sSL "https://github.com/aliyun/aliyun-cli/releases/download/v${VERSION}/aliyun-cli-linux-${VERSION}-amd64.tgz" | tar zxv
+        sudo install -m 755 aliyun /usr/local/bin/aliyun
+        rm -f aliyun
+
+        aliyun version
+
+        command="aliyun configure set \
+          --mode ${{ inputs.mode }} \
+          --region ${{ inputs.region }} \
+          --access-key-id ${{ inputs.access-key-id }} \
+          --access-key-secret ${{ inputs.access-key-secret }}"
+
+        if [ -n "${{ inputs.sts-token }}" ]; then
+          command="${command} --sts-token ${{ inputs.sts-token }}"
+        fi
+
+        $command
+      shell: bash
