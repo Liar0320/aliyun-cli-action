@@ -1,5 +1,5 @@
 *.swp
 .DS_Store
 
-# my.secrets
-# my.env
+my.secrets
+my.env
