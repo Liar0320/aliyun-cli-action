@@ -18,6 +18,5 @@ jobs:
         region: ${{ vars.ALIYUN_REGION }}
 
     # - name: Upload a file to Aliyun OSS
-    #   run: aliyun oss cp sample.html ${{ vars.BUCKET_DESTINATION }} -r --acl public-read
+    #   run: aliyun oss cp sample.html ${{ vars.BUCKET_DESTINATION }} -r -f --acl public-read
     #   working-directory: ${{ vars.WORKING_DIRECTORY }}
-

@@ -1,0 +1,30 @@
+name: Manually Triggered Workflows
+
+# Test in local via act
+# act --input trigger=manually --secret-file my.secrets --var-file my.variables --pull=false --container-architecture linux/amd64 -W .github/workflows/test_with_marketplace_actions.yaml
+on:
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: 'Pass Inputs to Manually Triggered Workflows'     
+        default: 'manually'
+
+jobs:
+  test_from_marketplace:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Aliyun CLI Action
+      uses: wadexu007/aliyun-cli-action@v1.0.0
+      with:
+        aliyun-cli-version: '3.0.165'
+        access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        region: ${{ vars.ALIYUN_REGION }}
+
+    - name: Upload to Aliyun OSS bucket
+      run: aliyun oss cp sample.html ${{ vars.BUCKET_DESTINATION }} -r -f --acl public-read
+      working-directory: ${{ vars.WORKING_DIRECTORY }}

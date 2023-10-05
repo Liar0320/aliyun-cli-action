@@ -6,16 +6,16 @@ This GitHub Action allows you to easily install and configure the Aliyun Command
 ## Usage
 ```
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
     - name: Install and Configure Aliyun CLI
-      uses: wadexu/aliyun-cli-action@v1
+      uses: wadexu007/aliyun-cli-action@v1.0.0
       with:
+        aliyun-cli-version: '3.0.181'
         access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
         access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         region: ${{ env.ALIYUN_REGION }}
 
+    - name: List objects in Aliyun OSS bucket
+      run: aliyun oss ls oss://xxx
 ```
 
 ## Getting more details
