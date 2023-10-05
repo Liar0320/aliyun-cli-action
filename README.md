@@ -12,7 +12,7 @@ This GitHub Action allows you to easily install and configure the Aliyun Command
         aliyun-cli-version: '3.0.181'
         access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
         access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-        region: ${{ env.ALIYUN_REGION }}
+        region: ${{ vars.ALIYUN_REGION }}
 
     - name: List objects in Aliyun OSS bucket
       run: aliyun oss ls oss://xxx
