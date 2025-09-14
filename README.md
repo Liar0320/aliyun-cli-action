@@ -7,15 +7,27 @@ This GitHub Action allows you to easily install and configure the Aliyun Command
 ```
     steps:
     - name: Install and Configure Aliyun CLI
-      uses: wadexu007/aliyun-cli-action@v1.0.0
+      uses: Liar0320/aliyun-cli-action@v1.0.0
       with:
-        aliyun-cli-version: '3.0.181'
+        version: '3.0.181'
         access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
         access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         region: ${{ vars.ALIYUN_REGION }}
 
     - name: List objects in Aliyun OSS bucket
-      run: aliyun oss ls oss://xxx
+      run: aliyun oss ls ${{ vars.BUCKET_DESTINATION }}
+
+    - name: Upload file to Aliyun OSS bucket
+      run: |
+        aliyun oss cp sample.html ${{ vars.BUCKET_DESTINATION }}
+        echo "File uploaded successfully"
+      working-directory: ${{ vars.WORKING_DIRECTORY }}
+
+    - name: Upload folder to Aliyun OSS bucket
+      run: |
+        aliyun oss cp dist/ ${{ vars.BUCKET_DESTINATION }} -r
+        echo "Folder uploaded successfully"
+      working-directory: ${{ vars.WORKING_DIRECTORY }}
 ```
 
 ## Getting more details

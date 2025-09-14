@@ -34,7 +34,15 @@ runs:
           VERSION=$(curl -sSL https://api.github.com/repos/aliyun/aliyun-cli/releases/latest | jq -r '.tag_name | split("/") | .[-1] | sub("^v"; "")')
         fi
 
-        curl -sSL "https://github.com/aliyun/aliyun-cli/releases/download/v${VERSION}/aliyun-cli-linux-${VERSION}-amd64.tgz" | tar zxv
+        # 检测架构
+        ARCH=$(uname -m)
+        if [[ ${ARCH} == "aarch64" || ${ARCH} == "arm64" ]]; then
+          ARCH_SUFFIX="arm64"
+        else
+          ARCH_SUFFIX="amd64"
+        fi
+
+        curl -sSL "https://github.com/aliyun/aliyun-cli/releases/download/v${VERSION}/aliyun-cli-linux-${VERSION}-${ARCH_SUFFIX}.tgz" | tar zxv
         sudo install -m 755 aliyun /usr/local/bin/aliyun
         rm -f aliyun
 
