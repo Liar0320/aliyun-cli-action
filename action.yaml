@@ -1,6 +1,6 @@
-name: 'Aliyun CLI Action'
+name: 'Aliyun CLI Setup Action'
 description: 'Install and Configure Aliyun command line tool'
-author: 'wadexu'
+author: 'Liar0320'
 branding:
   icon: 'cloud'
   color: 'orange'
