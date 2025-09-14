@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a GitHub Action that automatically installs and configures the Aliyun CLI for Alibaba Cloud services in GitHub workflows. The action is implemented as a composite action using bash scripts.
+This is a GitHub Action that automatically installs and configures the Aliyun CLI for Alibaba Cloud services in GitHub workflows. The action is implemented as a composite action using bash scripts with multi-architecture support (ARM64/AMD64).
 
 ## Key Files
 
@@ -32,17 +32,24 @@ The action supports two authentication modes:
 ## Architecture
 
 The action works by:
-1. Downloading the specified version of Aliyun CLI from GitHub releases
-2. Installing it to `/usr/local/bin/aliyun`
-3. Configuring authentication using provided credentials
-4. Making the CLI available for subsequent workflow steps
+1. Detecting system architecture (ARM64 vs AMD64)
+2. Downloading the appropriate Aliyun CLI binary from GitHub releases
+3. Installing it to `/usr/local/bin/aliyun`
+4. Configuring authentication using provided credentials
+5. Making the CLI available for subsequent workflow steps
 
 ## Development Commands
 
 ### Local Testing with act
 ```bash
+# Install act
+brew install act
+
+# Pull required Docker image
+docker pull catthehacker/ubuntu:act-latest --platform linux/amd64
+
 # Test the action locally using act (GitHub Actions local runner)
-act --input trigger=manually --secret-file my.secrets --var-file my.variables --pull=false --container-architecture linux/amd64 -W .github/workflows/test_with_marketplace_actions.yaml
+act --container-architecture linux/amd64 --input trigger=manually --secret-file my.secrets --var-file my.variables -W .github/workflows/test_with_local_actions.yaml
 ```
 
 ### Testing Setup
@@ -58,12 +65,15 @@ act --input trigger=manually --secret-file my.secrets --var-file my.variables --
 
 ```yaml
 - name: Install Aliyun CLI
-  uses: Liar0320/aliyun-cli-action@v1.0.0
+  uses: Liar0320/aliyun-cli-action@v1.0.2
   with:
     access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
     access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
     region: ${{ vars.ALIYUN_REGION }}
 
 - name: Use Aliyun CLI
-  run: aliyun oss ls oss://your-bucket
+  run: |
+    aliyun oss ls ${{ vars.BUCKET_DESTINATION }}
+    aliyun oss cp file.txt ${{ vars.BUCKET_DESTINATION }}
+    aliyun oss cp ./dist/ ${{ vars.BUCKET_DESTINATION }} -r
 ```
