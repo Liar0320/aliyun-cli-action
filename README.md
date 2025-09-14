@@ -7,7 +7,7 @@ This GitHub Action allows you to easily install and configure the Aliyun Command
 ```
     steps:
     - name: Install and Configure Aliyun CLI
-      uses: Liar0320/aliyun-cli-action@v1.0.0
+      uses: Liar0320/aliyun-cli-action@v1.0.2
       with:
         version: '3.0.181'
         access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
