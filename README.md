@@ -32,8 +32,12 @@ This GitHub Action allows you to easily install and configure the Aliyun Command
 
 ## Getting more details
 
-To get more details, follow the step by step guide through my medium 
+To get more details, follow the step by step guide through my medium
 - [Publish Your First GitHub Action to Automate Alibaba Cloud OSS Operations](https://medium.com/@wadexu007/3337aa5e5d60?source=friends_link&sk=0c86e6344745b34eeb551e601af3bbc7)
+
+## Related Projects
+
+- [auto-push-oss](https://github.com/OSpoon/auto-push-oss/tree/main) - A Node.js version GitHub Action for uploading files to Aliyun OSS
 
 ## License
 This GitHub Action is licensed under the MIT License.
