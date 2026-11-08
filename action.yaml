@@ -42,9 +42,22 @@ runs:
           ARCH_SUFFIX="amd64"
         fi
 
-        curl -sSL "https://github.com/aliyun/aliyun-cli/releases/download/v${VERSION}/aliyun-cli-linux-${VERSION}-${ARCH_SUFFIX}.tgz" | tar zxv
+        TAR_FILE="aliyun-cli-linux-${VERSION}-${ARCH_SUFFIX}.tgz"
+        DOWNLOAD_SUCCESS=false
+        if curl -sSLf "https://aliyuncli.alicdn.com/${TAR_FILE}" -o "$TAR_FILE" 2>/dev/null; then
+          DOWNLOAD_SUCCESS=true
+        elif curl -sSLf "https://github.com/aliyun/aliyun-cli/releases/download/v${VERSION}/${TAR_FILE}" -o "$TAR_FILE"; then
+          DOWNLOAD_SUCCESS=true
+        fi
+
+        if [[ "$DOWNLOAD_SUCCESS" != "true" ]]; then
+          echo "下载 Aliyun CLI 失败：${TAR_FILE}" >&2
+          exit 1
+        fi
+
+        tar zxvf "$TAR_FILE"
         sudo install -m 755 aliyun /usr/local/bin/aliyun
-        rm -f aliyun
+        rm -f aliyun "$TAR_FILE"
 
         aliyun version
 
